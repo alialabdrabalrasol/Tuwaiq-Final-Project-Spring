@@ -4,6 +4,7 @@ import com.example.final_project_spring.dto.LoginDTO;
 import com.example.final_project_spring.dto.UserEventDTO;
 import com.example.final_project_spring.dto.UserPlaceDTO;
 import com.example.final_project_spring.exception.DuplicateUserException;
+import com.example.final_project_spring.exception.InvalidDateException;
 import com.example.final_project_spring.exception.InvalidIDException;
 import com.example.final_project_spring.exception.InvalidUsernameException;
 import com.example.final_project_spring.model.Event;
@@ -16,8 +17,7 @@ import com.example.final_project_spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -77,7 +77,19 @@ public class UserService {
         Event new_event=eventRepository.findById(userEventDTO.getEvent_id()).orElseThrow(
                 ()->new InvalidIDException("Event id is not valid"));
 
-      
+        //sort the set by the event date because the order of a set changes
+        List<Event>eventslist=new ArrayList<>(new_user.getEvents());
+        Collections.sort(eventslist, Comparator.comparing(Event::getEvent_date));
+        //get the last element on the list which is the latest event that a user plans to attend to check its time and date
+        Event last_event=eventslist.get(eventslist.size()-1);
+        System.out.println(last_event.getEvent_date()  );
+        if(new_event.getEvent_date().isBefore(last_event.getEvent_date())||new_event.getEvent_date().equals(last_event.getEvent_date())){
+            throw new InvalidDateException("You have event : "+last_event.getDescription()+". On : "+last_event.getEvent_date()+". You cannot attend "+new_event.getDescription()
+            );
+    }
+
+
+
 
         new_user.getEvents().add(new_event);
         userRepository.save(new_user);

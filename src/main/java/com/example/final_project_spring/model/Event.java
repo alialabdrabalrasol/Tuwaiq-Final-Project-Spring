@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 
 @AllArgsConstructor @NoArgsConstructor @Getter @Setter
@@ -18,7 +20,8 @@ public class Event {
     @NotEmpty(message = "Please give a description")
     private String description;
     @NotNull(message = "Please enter a date")
-    private LocalDate event_date;
+    private LocalDateTime event_date;
+
 
 
     @ManyToMany(mappedBy = "events",cascade = CascadeType.ALL)

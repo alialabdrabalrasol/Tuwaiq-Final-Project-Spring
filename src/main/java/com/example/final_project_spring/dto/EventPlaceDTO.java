@@ -5,8 +5,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class EventDTO {
-    private String description;
-    private String starting_date;
-    private String starting_time;
+public class EventPlaceDTO {
+    private Integer event_id;
+    private Integer place_id;
 }

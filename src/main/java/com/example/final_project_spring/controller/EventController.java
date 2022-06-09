@@ -1,6 +1,7 @@
 package com.example.final_project_spring.controller;
 
 import com.example.final_project_spring.dto.EventDTO;
+import com.example.final_project_spring.dto.EventPlaceDTO;
 import com.example.final_project_spring.dto.ResponseApi;
 import com.example.final_project_spring.model.Event;
 import com.example.final_project_spring.service.EventService;
@@ -23,20 +24,28 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.OK).body(eventService.getEvents());
     }
     @PostMapping()
-    public ResponseEntity addEvent(@RequestBody @Valid Event event)
+    public ResponseEntity addEvent(@RequestBody EventDTO eventDTO)
     {
-        eventService.addEvent(event);
+        eventService.addEvent(eventDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseApi("Event successfully added",HttpStatus.CREATED.value()));
     }
     @PutMapping()
-    public ResponseEntity addPlacetoEvent(@RequestBody EventDTO eventDTO)
+    public ResponseEntity addPlacetoEvent(@RequestBody EventPlaceDTO eventPlaceDTO)
     {
-                return ResponseEntity.status(HttpStatus.OK).body( eventService.addPlacetoEvent(eventDTO));
+                return ResponseEntity.status(HttpStatus.OK).body( eventService.addPlacetoEvent(eventPlaceDTO));
+    }
+    @GetMapping("{user_id}")
+    public ResponseEntity getUserEvents(@PathVariable Integer user_id){
+        return ResponseEntity.status(HttpStatus.OK).body(eventService.getUserEvents(user_id));
     }
     @DeleteMapping()
     public ResponseEntity deleteEvent()
     {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseApi("Event successfully deleted",HttpStatus.OK.value()));
     }
+//    @GetMapping("/sorted")
+//    public ResponseEntity getSortedEvents(){
+//        return ResponseEntity.status(HttpStatus.OK).body(eventService.getFirstEvent(1));
+//    }
 
 }

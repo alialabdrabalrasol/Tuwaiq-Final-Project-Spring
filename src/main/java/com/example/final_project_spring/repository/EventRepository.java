@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event,Integer> {
-
+    @Query(value = "SELECT t from Event t")
+    Object SortByDate();
 }
