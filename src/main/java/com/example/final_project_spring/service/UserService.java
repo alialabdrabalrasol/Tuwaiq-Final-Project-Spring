@@ -15,6 +15,10 @@ import com.example.final_project_spring.repository.EventRepository;
 import com.example.final_project_spring.repository.PlaceRepository;
 import com.example.final_project_spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,7 +26,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PlaceRepository placeRepository;
     private final EventRepository eventRepository;
@@ -48,7 +52,8 @@ public class UserService {
     public void register(User user) {
         Boolean doesUserExist = userRepository.existsUserByUsername(user.getUsername());
         if(doesUserExist){throw new DuplicateUserException("User Already Exists");}
-
+        String hashedPass=new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(hashedPass);
         userRepository.save(user);
     }
     public void login(LoginDTO login_data){
@@ -103,7 +108,6 @@ public class UserService {
                 ()->new InvalidIDException("User id is not valid"));
         Event new_event=eventRepository.findById(userEventDTO.getEvent_id()).orElseThrow(
                 ()->new InvalidIDException("Event id is not valid"));
-        new_user.getEvents().remove(new_event.getUser().)
         userRepository.save(new_user);
     }
 
@@ -122,5 +126,15 @@ public class UserService {
             return 2;
         }
         return null;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User>user=userRepository.findUserByUsername(username);
+
+        if(user.isEmpty()){
+            throw new UsernameNotFoundException("Invalid username or password");
+        }
+        return user.get();
     }
 }

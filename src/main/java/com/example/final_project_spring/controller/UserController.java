@@ -28,7 +28,7 @@ public class UserController {
     {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUsers());
     }
-    @GetMapping("log-out")
+    @PostMapping("log-out")
     public ResponseEntity logOut()
     {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseApi("Logged out",HttpStatus.OK.value()));
