@@ -21,7 +21,8 @@ public class Event {
     private String description;
     @NotNull(message = "Please enter a date")
     private LocalDateTime event_date;
-
+    @NotNull(message = "Please enter a date")
+    private LocalDateTime ending_date;
 
 
     @ManyToMany(mappedBy = "events",cascade = CascadeType.ALL)

@@ -17,6 +17,7 @@ import com.example.final_project_spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -79,22 +80,47 @@ public class UserService {
 
         //sort the set by the event date because the order of a set changes
         List<Event>eventslist=new ArrayList<>(new_user.getEvents());
-        Collections.sort(eventslist, Comparator.comparing(Event::getEvent_date));
-        //get the last element on the list which is the latest event that a user plans to attend to check its time and date
-        Event last_event=eventslist.get(eventslist.size()-1);
-        System.out.println(last_event.getEvent_date()  );
-        if(new_event.getEvent_date().isBefore(last_event.getEvent_date())||new_event.getEvent_date().equals(last_event.getEvent_date())){
-            throw new InvalidDateException("You have event : "+last_event.getDescription()+". On : "+last_event.getEvent_date()+". You cannot attend "+new_event.getDescription()
-            );
+//        Collections.sort(eventslist, Comparator.comparing(Event::getEvent_date));
+//        //get the last element on the list which is the latest event that a user plans to attend to check its time and date
+//        Event last_event=eventslist.get(eventslist.size()-1);
+//        System.out.println(last_event.getEvent_date()  );
+//        if(new_event.getEvent_date().isBefore(last_event.getEvent_date())||new_event.getEvent_date().equals(last_event.getEvent_date())){
+//            throw new InvalidDateException("You have event : "+last_event.getDescription()+". On : "+last_event.getEvent_date()+". You cannot attend "+new_event.getDescription()
+//            );
+//    }
+
+    if(new_event.getEvent_date().isBefore(LocalDateTime.now())){
+        throw new InvalidDateException("Event date and time are invalid");
     }
-
-
-
-
         new_user.getEvents().add(new_event);
         userRepository.save(new_user);
         new_event.setUser(new_user);
         eventRepository.save(new_event);
         return userRepository.findAll();
+    }
+    public void deleteEventfromUser(UserEventDTO userEventDTO){
+        User new_user=userRepository.findById(userEventDTO.getUser_id()).orElseThrow(
+                ()->new InvalidIDException("User id is not valid"));
+        Event new_event=eventRepository.findById(userEventDTO.getEvent_id()).orElseThrow(
+                ()->new InvalidIDException("Event id is not valid"));
+        new_user.getEvents().remove(new_event.getUser().)
+        userRepository.save(new_user);
+    }
+
+    public Integer eventsCollisionCase(LocalDateTime event1_start,LocalDateTime event1_end,LocalDateTime event2_start,LocalDateTime event2_end)
+    {
+        if(event1_start.equals(event2_start)){
+            return -1;
+        }
+        if(event1_start.equals(event2_end)){
+            return 0;
+        }
+        if(event1_start.isBefore(event2_start)&&event1_end.isAfter(event2_start)){
+            return 1;
+        }
+        if(event1_start.isBefore(event2_end)&&event1_end.isAfter(event2_end)){
+            return 2;
+        }
+        return null;
     }
 }

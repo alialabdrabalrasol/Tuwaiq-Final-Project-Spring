@@ -30,10 +30,10 @@ public class PlaceController {
         placeService.addPlace(place);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseApi("Place successfully added",HttpStatus.CREATED.value()));
     }
-//    @PostMapping("{event_id}/{place_id}")
-//    public ResponseEntity addEventPlace(@PathVariable Integer event_id,@PathVariable Integer place_id)
-//    {
-//        placeService.addEventPlace(event_id,place_id);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseApi("Event place successfully added",HttpStatus.CREATED.value()));
-//    }
+    @DeleteMapping("remove")
+    public ResponseEntity removePlace(@RequestParam Integer place_id)
+    {
+        placeService.removePlace(place_id);
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseApi("Place deleted successfully",HttpStatus.OK.value()));
+    }
 }

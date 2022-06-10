@@ -28,6 +28,11 @@ public class UserController {
     {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUsers());
     }
+    @GetMapping("log-out")
+    public ResponseEntity logOut()
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseApi("Logged out",HttpStatus.OK.value()));
+    }
     @PostMapping
     public ResponseEntity addUser(@RequestBody @Valid User user)
     {
@@ -45,6 +50,7 @@ public class UserController {
         userService.login(login_data);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseApi("Welcome "+login_data.getUsername(),HttpStatus.OK.value()));
     }
+
     @PutMapping("visit")
     public ResponseEntity visitPlace(@RequestBody UserPlaceDTO userPlaceDTO)
     {
@@ -57,6 +63,13 @@ public class UserController {
     {
 
         return ResponseEntity.status(HttpStatus.OK).body(userService.attendEvent(userEventDTO));
+    }
+    @DeleteMapping("remove-event")
+    public ResponseEntity removeEventfromUser(UserEventDTO userEventDTO)
+    {
+        userService.deleteEventfromUser(userEventDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseApi("Event deleted from user",HttpStatus.OK.value()));
+
     }
 
 }

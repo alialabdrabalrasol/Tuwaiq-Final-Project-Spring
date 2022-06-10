@@ -26,6 +26,11 @@ public class PlaceService {
     {
         placeRepository.save(place);
     }
-
+    public void removePlace(Integer place_id){
+        Place place=placeRepository.findById(place_id).orElseThrow(
+                ()-> new InvalidIDException("Place not found")
+        );
+        placeRepository.delete(place);
+    }
 
 }

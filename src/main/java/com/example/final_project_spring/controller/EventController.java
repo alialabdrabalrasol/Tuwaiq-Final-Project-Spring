@@ -38,14 +38,6 @@ public class EventController {
     public ResponseEntity getUserEvents(@PathVariable Integer user_id){
         return ResponseEntity.status(HttpStatus.OK).body(eventService.getUserEvents(user_id));
     }
-    @DeleteMapping()
-    public ResponseEntity deleteEvent()
-    {
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseApi("Event successfully deleted",HttpStatus.OK.value()));
-    }
-//    @GetMapping("/sorted")
-//    public ResponseEntity getSortedEvents(){
-//        return ResponseEntity.status(HttpStatus.OK).body(eventService.getFirstEvent(1));
-//    }
+
 
 }

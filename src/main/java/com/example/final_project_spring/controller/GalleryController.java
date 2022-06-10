@@ -1,6 +1,7 @@
 package com.example.final_project_spring.controller;
 
 import com.example.final_project_spring.dto.GalleryEventDTO;
+import com.example.final_project_spring.dto.GalleryUserDTO;
 import com.example.final_project_spring.dto.ResponseApi;
 import com.example.final_project_spring.model.Gallery;
 import com.example.final_project_spring.service.GalleryService;
@@ -26,6 +27,12 @@ public class GalleryController {
     {
         galleryService.addGallery(gallery, user_id);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseApi("Gallery added",HttpStatus.CREATED.value()));
+    }
+    @PostMapping("upload-photo")
+    public ResponseEntity uploadPhoto(GalleryUserDTO galleryUserDTO)
+    {
+        galleryService.uploadPhoto(galleryUserDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseApi("Photo successfully uploaded",HttpStatus.CREATED.value()));
     }
     @PutMapping()
     public ResponseEntity addEventtoGallery(@RequestBody GalleryEventDTO galleryEventDTO)

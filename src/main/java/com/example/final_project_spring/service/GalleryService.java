@@ -1,6 +1,7 @@
 package com.example.final_project_spring.service;
 
 import com.example.final_project_spring.dto.GalleryEventDTO;
+import com.example.final_project_spring.dto.GalleryUserDTO;
 import com.example.final_project_spring.exception.InvalidIDException;
 import com.example.final_project_spring.model.Event;
 import com.example.final_project_spring.model.Gallery;
@@ -32,6 +33,20 @@ public class GalleryService {
         if(user.isEmpty()){throw new InvalidIDException("Invalid user id");}
         gallery.setUser(user.get());
         galleryRepository.save(gallery);
+    }
+    public void uploadPhoto(GalleryUserDTO galleryUserDTO){
+        Optional<User> user=userRepository.findById(galleryUserDTO.getUser_id());
+        if(user.isEmpty()){throw new InvalidIDException("Invalid user id");}
+        Gallery user_photo=new Gallery();
+        user_photo.setUser(user.get());
+        user_photo.setPhoto_url(galleryUserDTO.getPhoto_url());
+        user_photo.setPhoto_date(galleryUserDTO.getPic_date().toLocalDate());
+        user_photo.setDescription(galleryUserDTO.getDesciption());
+        galleryRepository.save(user_photo);
+        user.get().getGallery().add(user_photo);
+        userRepository.save(user.get());
+
+
     }
 
     public Object addEventtoGallery(GalleryEventDTO galleryEventDTO) {
