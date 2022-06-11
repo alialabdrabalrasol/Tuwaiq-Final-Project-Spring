@@ -26,47 +26,53 @@ public class UserController {
     @GetMapping
     public ResponseEntity getUsers()
     {
+        logger.info("getUsers() - User controller");
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUsers());
-    }
-    @PostMapping("log-out")
-    public ResponseEntity logOut()
-    {
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseApi("Logged out",HttpStatus.OK.value()));
     }
     @PostMapping
     public ResponseEntity addUser(@RequestBody @Valid User user)
     {
+        logger.info("addUsers() - User controller");
         userService.addUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseApi("User successfully added",HttpStatus.CREATED.value()));
     }
     @PostMapping("register")
     public ResponseEntity register(@RequestBody @Valid User user){
+        logger.info("register - User controller");
         userService.register(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseApi("User successfully registered",HttpStatus.CREATED.value()));
     }
     @PostMapping("login")
     public ResponseEntity login(@RequestBody LoginDTO login_data)
     {
+        logger.info("login() - User controller");
         userService.login(login_data);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseApi("Welcome "+login_data.getUsername(),HttpStatus.OK.value()));
+    }
+    @PostMapping("log-out")
+    public ResponseEntity logOut()
+    {
+        logger.info("logOut() - User controller");
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseApi("Logged out",HttpStatus.OK.value()));
     }
 
     @PutMapping("visit")
     public ResponseEntity visitPlace(@RequestBody UserPlaceDTO userPlaceDTO)
     {
-
+        logger.info("visitPlace() - User controller");
         return ResponseEntity.status(HttpStatus.OK).body(userService.visitPlace(userPlaceDTO));
     }
 
     @PutMapping("attend")
     public ResponseEntity attendEvent(@RequestBody UserEventDTO userEventDTO)
     {
-
+        logger.info("attendEvent() - User controller");
         return ResponseEntity.status(HttpStatus.OK).body(userService.attendEvent(userEventDTO));
     }
     @DeleteMapping("remove-event")
     public ResponseEntity removeEventfromUser(UserEventDTO userEventDTO)
     {
+        logger.info("removeEventfromUser() - User controller");
         userService.deleteEventfromUser(userEventDTO);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseApi("Event deleted from user",HttpStatus.OK.value()));
 

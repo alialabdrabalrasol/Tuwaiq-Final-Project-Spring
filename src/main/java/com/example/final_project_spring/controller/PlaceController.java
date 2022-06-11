@@ -22,17 +22,20 @@ public class PlaceController {
     @GetMapping
     public ResponseEntity getPlaces()
     {
+        logger.info("getPlace() - PlaceController");
         return ResponseEntity.status(HttpStatus.OK).body(placeService.getPlaces());
     }
     @PostMapping
     public ResponseEntity addPlace(@RequestBody @Valid Place place)
     {
+        logger.info("addPlace() - PlaceController");
         placeService.addPlace(place);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseApi("Place successfully added",HttpStatus.CREATED.value()));
     }
     @DeleteMapping("remove")
     public ResponseEntity removePlace(@RequestParam Integer place_id)
     {
+        logger.info("removePlace() - PlaceController");
         placeService.removePlace(place_id);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseApi("Place deleted successfully",HttpStatus.OK.value()));
     }
